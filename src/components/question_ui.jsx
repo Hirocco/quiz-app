@@ -1,8 +1,10 @@
+import {nanoid} from 'nanoid'
 export default function Question(props)
 {
    const correctAnswerClassName = 
    `
    ${props.selectedAnswer === props.correctAnswer ? 'ans-btn-selected' : 'ans-btn'}
+   ${(props.showAnswer && props.selectedAnswer === props.correctAnswer) && 'ans-btn-correct'}
    `
 
     const incorrectAnswers = props.incorrectAnswers.map(badAnswer=>{
@@ -11,15 +13,14 @@ export default function Question(props)
         ${props.selectedAnswer === badAnswer ? "ans-btn-selected" : "ans-btn"}
 		${(props.showAnswer && props.selectedAnswer === badAnswer) && "ans-btn-incorrect"}
         `
-        return (<button onClick={()=>props.handleChoice(props.id , props.correctAnswer)}  
+        return (<button key={nanoid()} onClick={()=>props.handleChoice(props.id , badAnswer)}  
                         className={incorrectAnswerClassName}>{badAnswer}
                 </button>)
     })
-    console.log(props.id)
     return(
         <li className="question-list-item">
             <h1 className="question--title">{props.question}</h1>
-            <button onClick={()=>props.handleChoice(props.id , props.correctAnswer)} 
+            <button key={nanoid()} onClick={()=>props.handleChoice(props.id , props.correctAnswer)} 
                 className={correctAnswerClassName}>{props.correctAnswer}
             </button>
             {incorrectAnswers}
